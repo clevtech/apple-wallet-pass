@@ -1,11 +1,16 @@
-package walletpass
+package passkit
 
-import "time"
+import (
+	"encoding/json"
+	"errors"
+	"time"
+)
 
 type BarcodeFormat string
 type DataDetectorType string
 type DateStyle string
 type NumberStyle string
+type PassPersonalizationField string
 type TextAlignment string
 type TimeStyle string
 type TransitType string
@@ -31,6 +36,11 @@ const (
 	NumberStylePercent    NumberStyle = "PKNumberStylePercent"
 	NumberStyleScientific NumberStyle = "PKNumberStyleScientific"
 	NumberStyleSpellOut   NumberStyle = "PKNumberStyleSpellOut"
+
+	PassPersonalizationFieldName         PassPersonalizationField = "PKPassPersonalizationFieldName"
+	PassPersonalizationFieldPostalCode   PassPersonalizationField = "PKPassPersonalizationFieldPostalCode"
+	PassPersonalizationFieldEmailAddress PassPersonalizationField = "PKPassPersonalizationFieldEmailAddress"
+	PassPersonalizationFieldPhoneNumber  PassPersonalizationField = "PKPassPersonalizationFieldPhoneNumber"
 
 	TextAlignmentLeft    TextAlignment = "PKTextAlignmentLeft"
 	TextAlignmentCenter  TextAlignment = "PKTextAlignmentCenter"
@@ -85,6 +95,318 @@ type Pass struct {
 	WebServiceURL              string        `json:"webServiceURL,omitempty"`
 }
 
+func (p *Pass) SetAppLaunchURL(url string) error {
+	if url == "" {
+		return errors.New("URL can not be empty")
+	}
+
+	p.AppLaunchURL = url
+
+	return nil
+}
+
+func (p *Pass) SetAssociatedStoreIdentifiers(ids []int64) error {
+	if len(ids) == 0 {
+		return errors.New("Store identifiers can not be empty")
+	}
+
+	p.AssociatedStoreIdentifiers = ids
+
+	return nil
+}
+
+func (p *Pass) SetAuthenticationToken(token string) error {
+	if token == "" {
+		return errors.New("Authentication token can not be empty")
+	}
+
+	p.AuthenticationToken = token
+
+	return nil
+}
+
+func (p *Pass) SetBackgroundColor(color string) error {
+	if color == "" {
+		return errors.New("Background color can not be empty")
+	}
+
+	p.BackgroundColor = color
+
+	return nil
+}
+
+func (p *Pass) SetBarcodes(barcodes []Barcodes) error {
+	if len(barcodes) == 0 {
+		return errors.New("Barcodes can not be empty")
+	}
+
+	p.Barcodes = barcodes
+
+	return nil
+}
+
+func (p *Pass) SetBeacons(beacons []Beacons) error {
+	if len(beacons) == 0 {
+		return errors.New("Beacons can not be empty")
+	}
+
+	p.Beacons = beacons
+
+	return nil
+}
+
+func (p *Pass) SetBoardingPass(boardingPass *BoardingPass) error {
+	if boardingPass == nil {
+		return errors.New("Boarding pass can not be empty")
+	}
+
+	p.BoardingPass = boardingPass
+
+	return nil
+}
+
+func (p *Pass) SetCoupon(coupon *Coupon) error {
+	if coupon == nil {
+		return errors.New("Coupon can not be empty")
+	}
+
+	p.Coupon = coupon
+
+	return nil
+}
+
+func (p *Pass) SetDescription(description string) error {
+	if description == "" {
+		return errors.New("Description can not be empty")
+	}
+
+	p.Description = description
+
+	return nil
+}
+
+func (p *Pass) SetEventTicket(eventTicket *EventTicket) error {
+	if eventTicket == nil {
+		return errors.New("Event ticket can not be empty")
+	}
+
+	p.EventTicket = eventTicket
+
+	return nil
+}
+
+func (p *Pass) SetExpirationDate(date *time.Time) error {
+	if date == nil {
+		return errors.New("Expiration date can not be empty")
+	}
+
+	p.ExpirationDate = date
+
+	return nil
+}
+
+func (p *Pass) SetForegroundColor(color string) error {
+	if color == "" {
+		return errors.New("Foreground color can not be empty")
+	}
+
+	p.ForegroundColor = color
+
+	return nil
+}
+
+func (p *Pass) SetFormatVersion(version int64) error {
+	if version != 1 {
+		return errors.New("Format version can only be 1")
+	}
+
+	p.FormatVersion = version
+
+	return nil
+}
+
+func (p *Pass) SetGeneric(generic *Generic) error {
+	if generic == nil {
+		return errors.New("Generic can not be empty")
+	}
+
+	p.Generic = generic
+
+	return nil
+}
+
+func (p *Pass) SetGroupingIdentifier(identifier string) error {
+	if identifier == "" {
+		return errors.New("Grouping identifier can not be empty")
+	}
+
+	p.GroupingIdentifier = identifier
+
+	return nil
+}
+
+func (p *Pass) SetLabelColor(color string) error {
+	if color == "" {
+		return errors.New("Label color can not be empty")
+	}
+
+	p.LabelColor = color
+
+	return nil
+}
+
+func (p *Pass) SetLocations(locations []Locations) error {
+	if len(locations) == 0 {
+		return errors.New("Locations can not be empty")
+	}
+
+	p.Locations = locations
+
+	return nil
+}
+
+func (p *Pass) SetLogoText(text string) error {
+	if text == "" {
+		return errors.New("Logo text can not be empty")
+	}
+
+	p.LogoText = text
+
+	return nil
+}
+
+func (p *Pass) SetMaxDistance(distance int64) error {
+	if distance == 0 {
+		return errors.New("Max distance can not be empty")
+	}
+
+	p.MaxDistance = distance
+
+	return nil
+}
+
+func (p *Pass) SetNFC(nfc *NFC) error {
+	if nfc == nil {
+		return errors.New("NFC can not be empty")
+	}
+
+	p.NFC = nfc
+
+	return nil
+}
+
+func (p *Pass) SetOrganizationName(name string) error {
+	if name == "" {
+		return errors.New("Organization name can not be empty")
+	}
+
+	p.OrganizationName = name
+
+	return nil
+}
+
+func (p *Pass) SetPassTypeIdentifier(identifier string) error {
+	if identifier == "" {
+		return errors.New("Pass type identifier can not be empty")
+	}
+
+	p.PassTypeIdentifier = identifier
+
+	return nil
+}
+
+func (p *Pass) SetRelevantDate(date *time.Time) error {
+	if date == nil {
+		return errors.New("Relevant date can not be empty")
+	}
+
+	p.RelevantDate = date
+
+	return nil
+}
+
+func (p *Pass) SetSemantics(semantics *SemanticTags) error {
+	if semantics == nil {
+		return errors.New("Semantics can not be empty")
+	}
+
+	p.Semantics = semantics
+
+	return nil
+}
+
+func (p *Pass) SetSerialNumber(number string) error {
+	if number == "" {
+		return errors.New("Serial number can not be empty")
+	}
+
+	p.SerialNumber = number
+
+	return nil
+}
+
+func (p *Pass) SetSharingProhibited(prohibited bool) error {
+	p.SharingProhibited = prohibited
+
+	return nil
+}
+
+func (p *Pass) SetStoreCard(storeCard *StoreCard) error {
+	if storeCard == nil {
+		return errors.New("Store card can not be empty")
+	}
+
+	p.StoreCard = storeCard
+
+	return nil
+}
+
+func (p *Pass) SetSuppressStripShine(suppress bool) error {
+	p.SuppressStripShine = suppress
+
+	return nil
+}
+
+func (p *Pass) SetTeamIdentifier(identifier string) error {
+	if identifier == "" {
+		return errors.New("Team identifier can not be empty")
+	}
+
+	p.TeamIdentifier = identifier
+
+	return nil
+}
+
+// func (p *Pass) SetUserInfo(userInfo []UserInfo) error {
+// 	if len(userInfo) == 0 {
+// 		return errors.New("User infos can not be empty")
+// 	}
+
+// 	p.UserInfo = userInfo
+
+// 	return nil
+// }
+
+func (p *Pass) SetVoided(voided bool) error {
+	p.Voided = voided
+
+	return nil
+}
+
+func (p *Pass) SetWebServiceURL(url string) error {
+	if url == "" {
+		return errors.New("Web service url can not be empty")
+	}
+
+	p.WebServiceURL = url
+
+	return nil
+}
+
+func (p *Pass) ToJson() ([]byte, error) {
+	return json.Marshal(p)
+}
+
 type Barcodes struct {
 	AltText         string        `json:"altText,omitempty"`
 	Format          BarcodeFormat `json:"format,omitempty"`
@@ -104,16 +426,32 @@ type BoardingPass struct {
 	TransitType TransitType `json:"transitType,omitempty"`
 }
 
+func NewBoardingPass(transitType TransitType) *BoardingPass {
+	return &BoardingPass{PassFields: NewPassFields(), TransitType: transitType}
+}
+
 type Coupon struct {
 	*PassFields
+}
+
+func NewCoupon() *Coupon {
+	return &Coupon{PassFields: NewPassFields()}
 }
 
 type EventTicket struct {
 	*PassFields
 }
 
+func NewEventTicket() *EventTicket {
+	return &EventTicket{PassFields: NewPassFields()}
+}
+
 type Generic struct {
 	*PassFields
+}
+
+func NewGeneric() *Generic {
+	return &Generic{PassFields: NewPassFields()}
 }
 
 type PassFields struct {
@@ -122,6 +460,10 @@ type PassFields struct {
 	HeaderFields    []PassFieldContent `json:"headerFields,omitempty"`
 	PrimaryFields   []PassFieldContent `json:"primaryFields,omitempty"`
 	SecondaryFields []PassFieldContent `json:"secondaryFields,omitempty"`
+}
+
+func NewPassFields() *PassFields {
+	return &PassFields{}
 }
 
 type PassFieldContent struct {
@@ -259,4 +601,14 @@ type WifiNetwork struct {
 
 type StoreCard struct {
 	*PassFields
+}
+
+func NewStoreCard() *StoreCard {
+	return &StoreCard{PassFields: NewPassFields()}
+}
+
+type Personalize struct {
+	Description                   string                     `json:"description,omitempty"`
+	RequiredPersonalizationFields []PassPersonalizationField `json:"requiredPersonalizationFields,omitempty"`
+	TermsAndConditions            string                     `json:"termsAndConditions,omitempty"`
 }
